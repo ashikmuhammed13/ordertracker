@@ -1,0 +1,5 @@
+/awbcreate        /createawb.html         200
+/updateshipment        /updateshipment.html         200
+/track        /track.html
+/allawb        /allawb.html
+/            /index.html        200
