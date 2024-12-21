@@ -1,295 +1,686 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Tracking</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-  <style>
-  
-    :root {
-  --primary-purple: #6c63ff;
-  --secondary-orange: #ffa26b;
-  --header-bg: linear-gradient(244deg, #fde6cd, #ebebff);
-  --text-dark: #0b0757;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Gate Order Tracking</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-purple: #6c63ff;
+            --secondary-orange: #ffa26b;
+            --header-bg: linear-gradient(244deg, #fde6cd, #ebebff);
+            --text-dark: #0b0757;
+        }
+
+        body {
+            font-family: 'TWKLausanne', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 76px;
+        }
+
+        /* Enhanced Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Improved Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #f5f7ff 0%, #ffd8bc 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,229.3C672,224,768,192,864,165.3C960,139,1056,117,1152,122.7C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") bottom/cover no-repeat;
+            opacity: 0.5;
+            top: 0;
+            left: 0;
+        }
+
+        /* Enhanced Card Hover Effects */
+        .status-card {
+            transform: translateY(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .status-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--primary-purple);
+        }
+
+        /* Improved Navigation */
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-purple);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* Enhanced Button Styles */
+        .btn-primary {
+            background-image: linear-gradient(45deg, var(--primary-purple), var(--secondary-orange));
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--secondary-orange), var(--primary-purple));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        /* Improved Form Styles */
+        .form-control {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .form-control:focus {
+            transform: translateY(-2px);
+            border-color: var(--primary-purple);
+        }
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+
+            .tracking-card {
+                margin: 20px 15px;
+            }
+
+            .status-cards {
+                padding: 0 15px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Add smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Enhanced Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-purple);
+            font-size: 1.8rem;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: var(--secondary-orange);
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            font-weight: 500;
+            padding: 0.7rem 1.2rem;
+            margin: 0 0.3rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: var(--primary-purple);
+            color: white;
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: white;
+                padding: 1rem;
+                border-radius: 10px;
+                margin-top: 0.5rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+
+            .nav-link {
+                padding: 0.8rem 1rem;
+                margin: 0.2rem 0;
+            }
+        }
+
+        /* Existing Styles with Improvements */
+        .blueOrangeGradient {
+            background: linear-gradient(99deg, var(--secondary-orange), var(--primary-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+        }
+
+        .hero-section {
+            padding: 60px 0;
+            background: var(--header-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tracking-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin: 20px auto;
+            max-width: 500px;
+        }
+        .carousel-section {
+    padding: 80px 0;
+    background: #f8f9ff;
 }
 
-body {
-    font-family: 'TWKLausanne', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Navbar Styles */
-    nav {
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      padding: 15px 0;
-    }
-
-    .navbar-brand img {
-      height: 60px;
-    }
-
-    .navbar-nav .nav-link {
-      color: #1e1e1e;
-      font-weight: 500;
-      margin-right: 20px;
-      transition: color 0.3s ease;
-    }
-
-    .navbar-nav .nav-link:hover {
-      color: #6c63ff;
-    }
-
-    .navbar-nav .btn {
-      border-radius: 20px;
-      font-weight: 500;
-      padding: 8px 20px;
-    }
-
-    .navbar-nav .btn-primary {
-      background-color: #6c63ff;
-      border-color: #6c63ff;
-      color: #ffffff;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-    .navbar-nav .btn-primary:hover {
-      background-color: #5447ff;
-      border-color: #5447ff;
-    }
-
-    .navbar-nav .btn-outline-primary {
-      border-color: #6c63ff;
-      color: #6c63ff;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    .navbar-nav .btn-outline-primary:hover {
-      background-color: #6c63ff;
-      color: #ffffff;
-    }
-    .blueOrangeGradient {
-  color: transparent;
-  font-family: 'TWKLausanne', Arial, sans-serif;
-  background: linear-gradient(99deg, var(--secondary-orange), var(--primary-purple));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-fill-color: transparent;
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
 }
 
-    
-.btn-light {
-  background-color: var(--primary-purple);
-  border-color: var(--primary-purple);
-  color: white;
-  border-radius: 20px;
-  padding: 8px 20px;
+.carousel-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
 }
 
-.hero-section {
-  padding: 80px 0;
-  background: transparent linear-gradient(244deg, #fde6cd, #ebebff) 0 0 no-repeat padding-box;
-      background-position: bottom;
-      z-index: 0;
-  position: relative;
-  overflow: hidden;
-  
+.carousel {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-item {
+    height: 500px;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 80%;
+    margin: 0 auto;
+    bottom: 40px;
+}
+
+.carousel-caption h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.carousel-indicators {
+    bottom: 20px;
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 5px;
+    background-color: white;
+    opacity: 0.5;
+}
+
+.carousel-indicators button.active {
+    background-color: var(--primary-purple);
+    opacity: 1;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.carousel-control-prev {
+    left: 20px;
+}
+
+.carousel-control-next {
+    right: 20px;
+}
+
+.carousel:hover .carousel-control-prev,
+.carousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1) brightness(0);
+    width: 25px;
+    height: 25px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .carousel-item {
+        height: 400px;
+    }
+
+    .carousel-caption {
+        bottom: 20px;
+        padding: 15px;
+    }
+
+    .carousel-caption h3 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-item {
+        height: 300px;
+    }
+
+    .carousel-caption {
+        bottom: 10px;
+        padding: 10px;
+    }
+
+    .carousel-caption h3 {
+        font-size: 1.2rem;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+        /* Responsive Improvements */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+                text-align: center;
+            }
+
+            .lead {
+                text-align: center;
+            }
+
+            .status-cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 0 15px;
+            }
+
+            .courier-logos {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+            }
+
+            .courier-logo {
+                height: 40px;
+                width: auto;
+            }
+        }
+
+        /* Status Cards Improvement */
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .status-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Button Improvements */
+        .btn-primary {
+            background-color: var(--primary-purple);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .hero-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f5f7ff 0%, #ffd8bc 100%);
+    position: relative;
+    overflow: hidden;
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  color: var(--text-dark);
-  font-weight: 700;
-}
-
-.hero-title span {
-  color: var(--primary-purple);
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
 }
 
 .tracking-card {
-  background: white;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
-.track-options {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+.tracking-card:hover {
+    transform: translateY(-5px);
 }
 
-.track-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.order-details-note {
-margin-top: 20px;
-padding-top: 20px;
-border-top: 1px solid #e5e5e5;
-}
-.order-details-note h5 {
-font-size: 16px;
-font-weight: bold;
-margin-bottom: 10px;
+.tracking-title {
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
 }
 
-.status-section {
-  padding: 60px 0;
+.tracking-type {
+    display: flex;
+    gap: 1rem;
 }
 
-.status-title {
-  font-size: 2.5rem;
+.form-check-input:checked {
+    background-color: var(--primary-purple);
+    border-color: var(--primary-purple);
 }
 
-.status-title span {
-  color: var(--primary-purple);
+.input-group {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-.status-cards {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 40px;
+.form-control {
+    border: 1px solid #e0e0e0;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
 }
 
-.status-card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  flex: 1;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+.form-control:focus {
+    border-color: var(--primary-purple);
+    box-shadow: none;
 }
 
-.status-icon {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 15px;
+.btn-primary {
+    padding: 0.8rem 2rem;
+    font-weight: 600;
 }
 
-.courier-section {
-  background: #f8f9ff;
-  padding: 80px 0;
+.tracking-example {
+    font-size: 0.85rem;
+    padding-left: 0.5rem;
 }
 
-.courier-logos {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 40px;
+.alert {
+    border-radius: 12px;
+    background: #f8f9ff;
 }
 
-.courier-logo {
-  max-height: 70px;
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .hero-title {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+    
+    .lead {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .tracking-card {
+        padding: 25px;
+    }
 }
 
-.footer {
-  background: #000;
-  color: white;
-  padding: 40px 0;
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .tracking-type {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .input-group .btn {
+        width: 100%;
+        margin-top: 0.5rem;
+        border-radius: 12px;
+    }
+    
+    .form-control {
+        border-radius: 12px;
+    }
 }
+.hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
 
-.footer a {
-  text-decoration: none;
-}
+    .typing-text {
+      position: relative;
+      white-space: nowrap;
+      border-right: 4px solid transparent;
+      animation: typing 4s steps(40) infinite,
+                blink-caret 0.75s step-end infinite;
+      overflow: hidden;
+    }
 
-.footer h5 {
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
+    .gradient-text {
+      background: linear-gradient(45deg, #6c63ff, #ffa26b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradient 3s ease infinite;
+      background-size: 200% 200%;
+    }
 
-.footer ul li {
-  margin-bottom: 0.5rem;
-}
+    @keyframes typing {
+      0% { width: 0 }
+      50% { width: 100% }
+      100% { width: 100% }
+    }
 
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #6c63ff }
+    }
 
-  .status-cards {
-    flex-direction: column;
-  }
-
-  .tracking-card {
-    margin: 20px;
-  }
-
-  .courier-logos {
-    flex-wrap: wrap;
-  }
-
-  .courier-logo {
-    max-height: 30px;
-  }
-}
-</style>
+    @keyframes gradient {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
+    <!-- Rest of your HTML code remains the same, just replace "TrackPro" with "E-Gate" -->
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="#">
-            <img src="" alt="">
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              
-              <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
-              </li>
-              
-            </ul>
-          </div>
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-box-seam me-2"></i>E-Gate
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-house-door me-2"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-box-seam me-2"></i>Shipments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-graph-up me-2"></i>Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-headset me-2"></i>Support</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </nav>
+    </nav>
 
   <!-- order track Section -->
-  <section class="hero-section gradientBanner">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6">
-            <h1 class="hero-title">Track your<br><span class="blueOrangeGradient">orders easily</span></h1>
-            <p class="lead">Just enter your Mobile Number, AWB tracking number or Order ID & it's done.</p>
-          </div>
-        <div class="col-lg-6">
-          <div class="tracking-card">
-            <h5>Track By:</h5>
-            <div class="track-options">
-              <div class="track-option">
-                <input type="radio" name="trackType" id="mobile" checked>
-                <label for="mobile">Mobile Number</label>
-              </div>
-              <div class="track-option">
-                <input type="radio" name="trackType" id="awb">
-                <label for="awb">AWB</label>
-              </div>
-              <div class="track-option">
-                <input type="radio" name="trackType" id="orderid">
-                <label for="orderid">Order Id</label>
-              </div>
-            </div>
-            <input type="text" class="form-control mb-3" placeholder="Enter tracking information">
-            <button class="btn btn-primary w-100">Send OTP</button>
-            <div class="order-details-note">
-                <h5>Can't Find Your Order Details?</h5>
-                <p>We sent your AWB tracking number to you via Email &amp; SMS upon order confirmation.</p>
-              </div>
-          </div>
-          
-        </div>
+<!-- Hero Banner Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="hero-title">
+          <span class="typing-text">Track Your Package</span>
+          <br>
+          <span class="gradient-text">Anytime, Anywhere</span>
+        </h1>
+        <p class="lead mb-4">Real-time tracking of your shipments with instant updates and detailed status information.</p>
       </div>
-    </div>
-  </section>
+          <div class="col-lg-6">
+              <div class="tracking-card">
+                  <div class="tracking-header mb-4">
+                      <h4 class="tracking-title">Track Your Shipment</h4>
+                      <p class="text-muted">Enter your tracking number below</p>
+                  </div>
+                  
+                  <div class="tracking-form">
+                      <div class="tracking-type mb-3">
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="trackingType" id="awbTracking" checked>
+                              <label class="form-check-label" for="awbTracking">AWB Number</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="trackingType" id="orderTracking">
+                              <label class="form-check-label" for="orderTracking">Order ID</label>
+                          </div>
+                      </div>
+                      
+                      <div class="input-group mb-3">
+                          <input type="text" class="form-control form-control-lg" placeholder="Enter AWB number">
+                          <button class="btn btn-primary" type="button">
+                              <i class="bi bi-search me-2"></i>Track
+                          </button>
+                      </div>
+                      
+                      <div class="tracking-example text-muted">
+                          <small>Example: 1234 5678 9012</small>
+                      </div>
+                  </div>
+
+                  <div class="order-details-note mt-4">
+                      <div class="alert alert-light border">
+                          <h6 class="mb-2"><i class="bi bi-info-circle me-2"></i>Can't Find Your Tracking Number?</h6>
+                          <p class="mb-0 text-muted">Check your email confirmation or SMS for the AWB tracking number sent after order placement.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
 
   <!-- Status Section -->
   <section class="status-section">
@@ -325,7 +716,61 @@ margin-bottom: 10px;
     </div>
   </section>
 
-  
+<!-- Carousel Section -->
+<section class="carousel-section">
+  <div class="container">
+      <div class="text-center mb-5">
+          <h2 class="section-title">Our <span class="blueOrangeGradient">Delivery Services</span></h2>
+          <p class="lead">Experience fast and reliable delivery across the globe</p>
+      </div>
+      
+      <div class="carousel-container">
+          <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+              <!-- Indicators -->
+              <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+                  <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+                  <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+              </div>
+
+              <!-- Carousel Items -->
+              <div class="carousel-inner">
+                  <div class="carousel-item active">
+                      <img src="https://via.placeholder.com/1200x600" class="d-block w-100" alt="Global Shipping">
+                      <div class="carousel-caption">
+                          <h3>Global Shipping</h3>
+                          <p>Delivering to over 200 countries worldwide</p>
+                      </div>
+                  </div>
+                  <div class="carousel-item">
+                      <img src="https://via.placeholder.com/1200x600" class="d-block w-100" alt="Express Delivery">
+                      <div class="carousel-caption">
+                          <h3>Express Delivery</h3>
+                          <p>Next-day delivery for urgent shipments</p>
+                      </div>
+                  </div>
+                  <div class="carousel-item">
+                      <img src="https://via.placeholder.com/1200x600" class="d-block w-100" alt="Secure Packaging">
+                      <div class="carousel-caption">
+                          <h3>Secure Packaging</h3>
+                          <p>Your items are safe with our premium packaging</p>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Controls -->
+              <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                  <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                  <span class="visually-hidden">Next</span>
+              </button>
+          </div>
+      </div>
+  </div>
+</section>
 
   <!-- Courier Logos Section -->
   <section class="courier-section bg-light py-5">
@@ -377,6 +822,50 @@ margin-bottom: 10px;
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Add fade-in animation to elements
+    document.addEventListener('DOMContentLoaded', function() {
+        const elements = document.querySelectorAll('.status-card, .tracking-card, .section-title');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        elements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Add loading animation to track button
+        const trackButton = document.querySelector('.btn-primary');
+        const spinner = document.createElement('div');
+        spinner.className = 'loading-spinner';
+        
+        trackButton.addEventListener('click', function() {
+            const input = document.querySelector('.form-control');
+            if (input.value.trim()) {
+                this.disabled = true;
+                this.innerHTML = '';
+                this.appendChild(spinner);
+                spinner.style.display = 'inline-block';
+                
+                setTimeout(() => {
+                    this.disabled = false;
+                    this.innerHTML = '<i class="bi bi-search me-2"></i>Track';
+                }, 2000);
+            }
+        });
+    });
+</script>
 </body>
 </html>
 
