@@ -131,7 +131,115 @@
             background: #34495e;
             color: #3498db !important;
         }
+        .package-form {
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.remove-package {
+    z-index: 1;
+}
+
+.package-summary {
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+.package-form {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.package-form:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.package-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.package-title {
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 500;
+}
+
+.btn-add-package {
+    background: linear-gradient(45deg, #3498db, #2ecc71);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-add-package:hover {
+    background: linear-gradient(45deg, #2ecc71, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    color: white;
+}
+
+.btn-delete-package {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #fff;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-delete-package:hover {
+    background: #dc3545;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.package-summary {
+    background: linear-gradient(45deg, #f8f9fa, #ffffff);
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.package-summary h6 {
+    color: #2c3e50;
+}
+
+.package-summary .text-primary {
+    font-weight: 600;
+}
+.form-section input[type="date"] {
+    height: 38px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0.375rem 0.75rem;
+}
+
+.form-section input[type="date"]:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
     </style>
+    
 </head>
 <body>
     <div class="wrapper">
@@ -190,39 +298,8 @@
 
             <!-- Content Area -->
             <div class="content-wrapper">
-                <div class="form-section mb-4">
-                    <div class="section-header">
-                        <i class="bi bi-box"></i>
-                        <h4>Package Details</h4>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label class="form-label required-field">Package Type</label>
-                            <select class="form-select">
-                                <option selected>Select Package Type</option>
-                                <option>Document</option>
-                                <option>Parcel</option>
-                                <option>Heavy Cargo</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label required-field">Weight (kg)</label>
-                            <input type="number" class="form-control" step="0.1">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Dimensions (L × W × H) cm</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" placeholder="Length">
-                                <span class="input-group-text">×</span>
-                                <input type="number" class="form-control" placeholder="Width">
-                                <span class="input-group-text">×</span>
-                                <input type="number" class="form-control" placeholder="Height">
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="container-fluid">
-                    <h4 class="mb-4">Create New AWB</h4>
+                    <h4 class="mb-4">Sender Reciver Details</h4>
                     <div class="row">
                         <!-- Ship From Section -->
                         <div class="col-md-6">
@@ -392,12 +469,95 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
-                                <button class="btn btn-light btn-cancel me-md-2" type="button">Cancel</button>
-                                <button class="btn btn-create-shipment" type="submit">
-                                    <i class="bi bi-box-seam me-2"></i>Create Shipment
-                                </button>
+                            
+                        </div> 
+                        <div class="form-section mb-4">
+                            <div class="section-header">
+                                <i class="bi bi-calendar"></i>
+                                <h4>Shipment Date</h4>
                             </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label required-field">Shipment Date</label>
+                                        <input type="date" class="form-control" id="shipmentDate" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        
+                        <div class="form-section mb-4">
+                            <div class="section-header">
+                                <i class="bi bi-box"></i>
+                                <h4>Package Details</h4>
+                            </div>
+    <!-- Package container -->
+    <div id="packages-container">
+        <!-- Initial package form -->
+        <div class="package-form mb-4">
+            <div class="package-header">
+                <h6 class="package-title">Package #1</h6>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label required-field">Package Type</label>
+                    <select class="form-select package-type">
+                        <option selected>Select Package Type</option>
+                        <option>Document</option>
+                        <option>Parcel</option>
+                        <option>Heavy Cargo</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label required-field">Weight (kg)</label>
+                    <input type="number" class="form-control package-weight" step="0.1">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Dimensions (L × W × H) cm</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" placeholder="Length">
+                        <span class="input-group-text">×</span>
+                        <input type="number" class="form-control" placeholder="Width">
+                        <span class="input-group-text">×</span>
+                        <input type="number" class="form-control" placeholder="Height">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Package Button -->
+    <div class="text-center mb-4">
+        <button id="add-package" class="btn btn-add-package">
+            <i class="bi bi-plus-circle-fill me-2"></i>Add Another Package
+        </button>
+    </div>
+
+    <!-- Package Summary -->
+    <div class="package-summary">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-box-seam text-primary me-2"></i>
+                    <h6 class="mb-0">Total Packages: <span id="total-packages" class="text-primary">1</span></h6>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-weight text-primary me-2"></i>
+                    <h6 class="mb-0">Total Weight: <span id="total-weight" class="text-primary">0</span> kg</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+    <button class="btn btn-light btn-cancel me-md-2" type="button">Cancel</button>
+    <button class="btn btn-create-shipment" type="submit">
+        <i class="bi bi-box-seam me-2"></i>Create Shipment
+    </button>
+</div>                 
+                          
                         </div>
                         </div>
                     </div>
@@ -407,7 +567,89 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    <script>document.addEventListener('DOMContentLoaded', function() {
+        // Initialize DOM elements
+        const packagesContainer = document.getElementById('packages-container');
+        const addPackageBtn = document.getElementById('add-package');
+        const totalPackagesSpan = document.getElementById('total-packages');
+        const totalWeightSpan = document.getElementById('total-weight');
+    
+        // Function to update package totals
+        function updateTotals() {
+            const packages = packagesContainer.getElementsByClassName('package-form');
+            totalPackagesSpan.textContent = packages.length;
+    
+            let totalWeight = 0;
+            const weightInputs = packagesContainer.getElementsByClassName('package-weight');
+            Array.from(weightInputs).forEach(input => {
+                totalWeight += parseFloat(input.value) || 0;
+            });
+            totalWeightSpan.textContent = totalWeight.toFixed(2);
+            
+            // Update package numbers
+            document.querySelectorAll('.package-title').forEach((title, index) => {
+                title.textContent = `Package #${index + 1}`;
+            });
+        }
+    
+        // Add package button click handler
+        addPackageBtn.addEventListener('click', function() {
+            const packageCount = packagesContainer.getElementsByClassName('package-form').length + 1;
+            
+            // Create new package form
+            const newPackage = document.createElement('div');
+            newPackage.className = 'package-form mb-4';
+            newPackage.innerHTML = `
+                <div class="package-header">
+                    <h6 class="package-title">Package #${packageCount}</h6>
+                </div>
+                <button class="btn btn-delete-package">
+                    <i class="bi bi-trash"></i>
+                </button>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label required-field">Package Type</label>
+                        <select class="form-select package-type">
+                            <option selected>Select Package Type</option>
+                            <option>Document</option>
+                            <option>Parcel</option>
+                            <option>Heavy Cargo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label required-field">Weight (kg)</label>
+                        <input type="number" class="form-control package-weight" step="0.1">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Dimensions (L × W × H) cm</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" placeholder="Length">
+                            <span class="input-group-text">×</span>
+                            <input type="number" class="form-control" placeholder="Width">
+                            <span class="input-group-text">×</span>
+                            <input type="number" class="form-control" placeholder="Height">
+                        </div>
+                    </div>
+                </div>`;
+    
+            // Add delete button functionality
+            const deleteBtn = newPackage.querySelector('.btn-delete-package');
+            deleteBtn.addEventListener('click', function() {
+                newPackage.remove();
+                updateTotals();
+            });
+    
+            packagesContainer.appendChild(newPackage);
+            updateTotals();
+        });
+    
+        // Listen for weight changes
+        packagesContainer.addEventListener('input', function(e) {
+            if (e.target.classList.contains('package-weight')) {
+                updateTotals();
+            }
+        });
+    
         // Add active class to current nav item
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function() {
@@ -415,6 +657,8 @@
                 this.classList.add('active-nav-link');
             });
         });
+    
+        // Form validation
         (() => {
             'use strict'
             const forms = document.querySelectorAll('.needs-validation')
@@ -428,13 +672,14 @@
                 }, false)
             })
         })()
-
-        // Add any additional JavaScript functionality here
+    
+        // Help icon functionality
         document.querySelectorAll('.help-icon').forEach(icon => {
             icon.addEventListener('click', () => {
                 // Add tooltip or help text functionality
             })
-        })
+        });
+    });
     </script>
 </body>
 </html>
