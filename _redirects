@@ -3,5 +3,6 @@
 /updateAwb /updateAwb.html 200
 /allShipment /allShipment.html 200
 /admin /admin.html 200
+/masterAwbCreate /masterAwb.html 200
 /tracking            /userTrackinng2       200
 /            /index.html        200
